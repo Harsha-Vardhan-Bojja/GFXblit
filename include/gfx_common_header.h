@@ -11,5 +11,11 @@
 #include <wayland-egl.h>
 #include <stdio.h>
 #include <inttypes.h>
-#include <stdbool.h>  
+#include <stdbool.h>
+
+#ifdef __cplusplus
+#include <iostream>
+using namespace std;
+#endif
+
 #endif

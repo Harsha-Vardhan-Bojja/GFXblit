@@ -1,6 +1,4 @@
 #include "gfx_blitter.h"
-#include <iostream>
-using namespace std;
 
 gfx_blitter::gfx_blitter()
 {

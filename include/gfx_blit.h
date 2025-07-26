@@ -1,11 +1,11 @@
 #ifndef GFX_BLIT_H
 #define GFX_BLIT_H
 
+#include "gfx_common_header.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "gfx_common_header.h"
 
 typedef enum gfx_rotation {
     GFX_ROTATION_0,
