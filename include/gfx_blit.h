@@ -31,8 +31,8 @@ typedef struct gfx_blit_image {
     int fd;
     uint32_t stride[2];
     uint32_t offset[2];
-    gfx_format_t fmt;
-    gfx_rotation_t rot;
+    gfx_format_t format;
+    gfx_rotation_t rotation;
     struct gbm_bo *bo;
     struct gbm_device *device;
     bool status;

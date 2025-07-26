@@ -35,3 +35,17 @@ int gfx_blitter::load_extensions()
         return gfx_blitter::GFX_LOAD_EXT_SUCCESS;
     }
 }
+
+void gfx_blitter::find_operation_type(gfx_blit_image_t *src, gfx_blit_image_t *dst)
+{
+
+    if ((src->width != dst->width) || (src->height != dst->height)) {
+        type_of_operation |= GFX_SCALE;
+    }
+    if (src->format != dst->format) {
+        type_of_operation |= GFX_CSC;
+    }
+    if (src->rotation != dst->rotation) {
+        type_of_operation |= GFX_ROTATION;
+    }
+}
