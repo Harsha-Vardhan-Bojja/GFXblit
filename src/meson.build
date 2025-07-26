@@ -62,8 +62,10 @@ libgfxblit_static = static_library(
 )
 
 # Exportable dependency
+export_inc = include_directories('../include')
+
 gfxblit_dep = declare_dependency(
-  include_directories: incs,
+  include_directories: export_inc,
   link_with: libgfxblit_shared,
   dependencies: all_deps
 )

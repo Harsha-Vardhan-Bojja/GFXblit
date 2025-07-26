@@ -30,6 +30,9 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
     else {
         cout  << "[INFO]: EGL context creation success" << endl;
     }
+
+    gfx_blitter_t.find_operation_type(src, dst);
+
     cout << "Executed the gfx_blit public api" << endl;
     return 0;
 }
