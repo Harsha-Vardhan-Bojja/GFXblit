@@ -3,6 +3,7 @@
 srcs = [
   'gfx_blit.cpp',
   'gfx_blitter.cpp',
+  'gfx_context.cpp',
 ]
 
 # Required system dependencies
