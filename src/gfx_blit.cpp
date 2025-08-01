@@ -6,7 +6,7 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
     gfx_blitter gfx_blitter_t;
     gfx_context gfx_context_t;
     gfx_blitter::egl_resource egl_res = {0};
-
+    gfx_blitter::gfx_pipeline_t gfx_pipe_res = {0};
     int ret_status = gfx_blitter_t.load_extensions();
     if(ret_status == gfx_blitter_t.GFX_LOAD_EXT_FAIL) {
         cout << "[INFO]: Failed to load extensions" << endl;
@@ -32,6 +32,10 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
     }
 
     gfx_blitter_t.find_operation_type(src, dst);
+    gfx_pipe_res.program = gfx_blitter_t.create_program();
+    if(gfx_pipe_res.program <= 0) {
+        cout << "[INFO]: Failed to creete the program" << endl;
+    }
 
     cout << "Executed the gfx_blit public api" << endl;
     return 0;
