@@ -91,4 +91,3 @@ void gfx_context::print_sys_info(EGLDisplay display) {
     cout << "GL Extensions:  " << glGetString(GL_EXTENSIONS) << endl;
     cout << "==================================================\n";
 }
-
