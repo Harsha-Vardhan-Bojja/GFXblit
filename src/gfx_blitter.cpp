@@ -113,3 +113,55 @@ int gfx_blitter::create_program()
         return program_id;
     }
 }
+
+EGLImageKHR gfx_blitter::create_egl_image(struct gbm_bo *bo, EGLDisplay display, char *type)
+{
+    EGLint width = gbm_bo_get_width(bo);
+    EGLint height = gbm_bo_get_height(bo);
+    EGLint stride = gbm_bo_get_stride(bo);
+    EGLint fd = gbm_bo_get_fd(bo);
+    EGLint bpp = gbm_bo_get_bpp(bo);
+    EGLint offset = gbm_bo_get_offset(bo,0);
+    EGLint format = gbm_bo_get_format(bo);
+    if(fd <= 0) {
+        printf("[ERROR]: Bcz of fd is < 1(%d)\n", fd);
+        return NULL;
+    }
+    else {
+        printf("[DEBUG]: %s: Width = %d, Height = %d, Stride = %d, Format = 0x%x, Offset = %d, fd = %d, bpp = %d\n",
+                type ,width, height, stride, format, offset, fd, bpp);
+    }
+
+    EGLint attrs[] = {
+        EGL_WIDTH, width,
+        EGL_HEIGHT, height,
+        EGL_LINUX_DRM_FOURCC_EXT, format,
+        EGL_DMA_BUF_PLANE0_FD_EXT, fd,
+        EGL_DMA_BUF_PLANE0_OFFSET_EXT, offset,
+        EGL_DMA_BUF_PLANE0_PITCH_EXT, stride,
+        EGL_NONE
+    };
+
+    EGLImageKHR image = eglCreateImageKHR(display, EGL_NO_CONTEXT, EGL_LINUX_DMA_BUF_EXT, NULL, attrs);
+    if(image == EGL_NO_IMAGE_KHR) {
+        printf("[ERROR]: Failed to create the EGLimageKHR");
+        return EGL_NO_IMAGE_KHR;
+    }
+
+    return image;
+}
+
+int gfx_blitter::create_texture(EGLImageKHR image)
+{
+    GLuint texture = 0;
+    glGenTextures(1,&texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, image);
+    return texture;
+}

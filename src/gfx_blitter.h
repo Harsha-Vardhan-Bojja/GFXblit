@@ -17,6 +17,8 @@ public:
     int create_program();
     int compile_shader(GLuint shader_type, const char *shader_source);
     void decide_shaders(const char **vertex_shader, const char **fragment_shader);
+    EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, char *buffer_type);
+    int create_texture(EGLImageKHR image);
     typedef struct egl_resource {
         struct wl_display *wayland_display;
         EGLDisplay egl_display;
