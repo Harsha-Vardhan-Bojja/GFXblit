@@ -17,7 +17,8 @@ public:
     int create_program();
     int compile_shader(GLuint shader_type, const char *shader_source);
     void decide_shaders(const char **vertex_shader, const char **fragment_shader);
-    EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, char *buffer_type);
+    EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *buffer_type);
+    int create_gl_buffer();
     int create_texture(EGLImageKHR image);
     typedef struct egl_resource {
         struct wl_display *wayland_display;
@@ -50,6 +51,15 @@ public:
     };
 
     int type_of_operation = GFX_NONE;
+
+    float vertices[20] = {
+        // Position         // Texcoords
+        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f, // Bottom-left
+         1.0f, -1.0f, 0.0f,  1.0f, 0.0f, // Bottom-right
+        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f, // Top-left
+         1.0f,  1.0f, 0.0f,  1.0f, 1.0f  // Top-right
+    };
+
     gfx_blitter();
     ~gfx_blitter();
 };
