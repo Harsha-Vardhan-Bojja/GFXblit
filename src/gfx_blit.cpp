@@ -40,6 +40,15 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         cout << "[INFO]: Failed to creete the program" << endl;
     }
 
+    gfx_pipe_res.vbo = gfx_blitter_t.create_gl_buffer();
+    if(gfx_pipe_res.vbo == 0) {
+        printf("[ERROR]: Failed create the gl buffer\n");
+        return -1;
+    }
+    else {
+        printf("[DEBUG]: VBO = %d\n", gfx_pipe_res.vbo);
+    }
+
     EGLImageKHR src_image = gfx_blitter_t.create_egl_image(src->bo, egl_res.egl_display, "INPUT ");
     if(src_image == EGL_NO_IMAGE_KHR || src_image == NULL) {
         printf("[ERROR]: Failed to create the src egl_image\n");

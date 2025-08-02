@@ -114,7 +114,7 @@ int gfx_blitter::create_program()
     }
 }
 
-EGLImageKHR gfx_blitter::create_egl_image(struct gbm_bo *bo, EGLDisplay display, char *type)
+EGLImageKHR gfx_blitter::create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *type)
 {
     EGLint width = gbm_bo_get_width(bo);
     EGLint height = gbm_bo_get_height(bo);
@@ -164,4 +164,13 @@ int gfx_blitter::create_texture(EGLImageKHR image)
 
     glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, image);
     return texture;
+}
+
+int gfx_blitter::create_gl_buffer()
+{
+    GLuint vbo = 0;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    return vbo;
 }
