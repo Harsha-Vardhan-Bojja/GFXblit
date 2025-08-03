@@ -74,6 +74,14 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
     gfx_pipe_res.textures[1] = gfx_blitter_t.create_texture(dst_image);
     printf("[INFO]: dst texture ID = %d\n", gfx_pipe_res.textures[1]);
 
+    gfx_pipe_res.fbo = gfx_blitter_t.create_fbo(gfx_pipe_res.textures[1], dst->width, dst->height);
+    if(gfx_pipe_res.fbo  > 0) {
+        printf("[INFO]: FBO ID = %d\n", gfx_pipe_res.fbo);
+    }
+    else {
+        return -1;
+    }
+
     cout << "Executed the gfx_blit public api" << endl;
     return 0;
 }
