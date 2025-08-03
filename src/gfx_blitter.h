@@ -20,6 +20,7 @@ public:
     EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *buffer_type);
     int create_gl_buffer();
     int create_texture(EGLImageKHR image);
+    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program);
     typedef struct egl_resource {
         struct wl_display *wayland_display;
         EGLDisplay egl_display;
@@ -28,11 +29,13 @@ public:
     } egl_resource_t;
 
     enum gfx_blitter_error {
+        GFX_GET_ATTRI_FAIL = -4,
         GFX_COMPILE_FAIL = -3,
         GFX_PROGRAM_LINK_FAIL = -2,
         GFX_CREATE_PROGRAM_FAIL = -1,
         GFX_LOAD_EXT_SUCCESS,
         GFX_LOAD_EXT_FAIL,
+        GFX_GET_ATTRI_SUCCESS,
         GFX_DECIDE_SHADER_FAIL,
     };
 
@@ -41,6 +44,8 @@ public:
         GLuint textures[2];
         GLuint fbo;
         GLuint vbo;
+        GLint posAttrib;
+        GLint texAttrib;
     } gfx_pipeline_t;
 
     enum gfx_operation {

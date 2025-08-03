@@ -7,11 +7,12 @@ class gfx_shader_manager
 private:
 public:
     const char* vertex_shader_source = R"(
-      attribute vec2 texCord;
+      attribute vec3 a_position;
+      attribute vec2 a_texCoord;
       varying vec2 v_texCord;
       void main() {
-          v_texCord = texCord;
-          gl_Position = vec4(texCord, 0.0, 1.0);
+          v_texCord = a_texCoord;
+          gl_Position = vec4(a_position, 1.0);
       }
     )";
 
