@@ -49,14 +49,6 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         printf("[DEBUG]: VBO = %d\n", gfx_pipe_res.vbo);
     }
 
-    ret_status = gfx_blitter_t.setup_gl_ver_Attr(&gfx_pipe_res.posAttrib, &gfx_pipe_res.texAttrib, gfx_pipe_res.program);
-    if(ret_status == gfx_blitter_t.GFX_GET_ATTRI_SUCCESS) {
-        printf("[INFO]: posAttrib Loc = %d, texAttrib Loc = %d\n", gfx_pipe_res.posAttrib, gfx_pipe_res.texAttrib);
-    }
-    else {
-        return -1;
-    }
-
     EGLImageKHR src_image = gfx_blitter_t.create_egl_image(src->bo, egl_res.egl_display, "INPUT ");
     if(src_image == EGL_NO_IMAGE_KHR || src_image == NULL) {
         printf("[ERROR]: Failed to create the src egl_image\n");
@@ -68,10 +60,10 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         return -1;
     }
 
-    gfx_pipe_res.textures[0] = gfx_blitter_t.create_texture(src_image);
+    gfx_pipe_res.textures[0] = gfx_blitter_t.create_texture(src_image, egl_res.egl_display);
     printf("[INFO]: Src texture ID = %d\n", gfx_pipe_res.textures[0]);
 
-    gfx_pipe_res.textures[1] = gfx_blitter_t.create_texture(dst_image);
+    gfx_pipe_res.textures[1] = gfx_blitter_t.create_texture(dst_image, egl_res.egl_display);
     printf("[INFO]: dst texture ID = %d\n", gfx_pipe_res.textures[1]);
 
     gfx_pipe_res.fbo = gfx_blitter_t.create_fbo(gfx_pipe_res.textures[1], dst->width, dst->height);
@@ -79,6 +71,15 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         printf("[INFO]: FBO ID = %d\n", gfx_pipe_res.fbo);
     }
     else {
+        return -1;
+    }
+
+    ret_status = gfx_blitter_t.render(gfx_pipe_res, dst->width, dst->height);
+    if(ret_status == gfx_blitter_t.GFX_RENDER_SUCCESS){
+        printf("[INFO]: Rendering got success\n");
+    }
+    else {
+        printf("[ERROR]: Rendering got failed\n");
         return -1;
     }
 
