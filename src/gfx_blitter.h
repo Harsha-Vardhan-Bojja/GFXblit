@@ -18,6 +18,7 @@ public:
     int compile_shader(GLuint shader_type, const char *shader_source);
     void decide_shaders(const char **vertex_shader, const char **fragment_shader);
     EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *buffer_type);
+    int create_fbo(GLuint texture_id, uint32_t width, uint32_t height);
     int create_gl_buffer();
     int create_texture(EGLImageKHR image);
     int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program);
@@ -29,6 +30,8 @@ public:
     } egl_resource_t;
 
     enum gfx_blitter_error {
+        GFX_FBO_GEN_FAIL = -6,
+        GFX_FRAMEBUFFER_INCOMPLETE = -5,
         GFX_GET_ATTRI_FAIL = -4,
         GFX_COMPILE_FAIL = -3,
         GFX_PROGRAM_LINK_FAIL = -2,

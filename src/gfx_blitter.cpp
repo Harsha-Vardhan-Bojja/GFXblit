@@ -193,3 +193,23 @@ int gfx_blitter::setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint pr
     glVertexAttribPointer(*tex_attri, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
     return GFX_GET_ATTRI_SUCCESS;
 }
+
+int gfx_blitter::create_fbo(GLuint texture_id, uint32_t width, uint32_t height)
+{
+    GLuint fbo;
+    glGenFramebuffers(1, &fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER,fbo);
+    if(fbo <  1) {
+        printf("[ERROR]: Failed to get the FBO (%d)\n", fbo);
+        return GFX_FBO_GEN_FAIL;
+    }
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if(status != GL_FRAMEBUFFER_COMPLETE) {
+        printf("[ERROR]: Framebuffer is not complete! Status: 0x%x\n", status);
+        return GFX_FRAMEBUFFER_INCOMPLETE;
+    }
+
+    return fbo;
+}
