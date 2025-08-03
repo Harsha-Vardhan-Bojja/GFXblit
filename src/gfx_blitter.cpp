@@ -174,3 +174,22 @@ int gfx_blitter::create_gl_buffer()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     return vbo;
 }
+
+int gfx_blitter::setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program)
+{
+    *pos_attri = -1;
+    *tex_attri = -1;
+    *pos_attri = glGetAttribLocation(program, "a_position");
+    *tex_attri = glGetAttribLocation(program, "a_texCoord");
+    if(*pos_attri == 1 || *tex_attri == -1) {
+        printf("[ERROR]: Failed to get the Attributes location\n");
+        printf("[ERROR]: pos_attri = %d, tex_attri = %d\n", *pos_attri, *tex_attri);
+        return GFX_GET_ATTRI_FAIL;
+    }
+
+    glEnableVertexAttribArray(*pos_attri);
+    glVertexAttribPointer(*pos_attri, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)0);
+    glEnableVertexAttribArray(*tex_attri);
+    glVertexAttribPointer(*tex_attri, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
+    return GFX_GET_ATTRI_SUCCESS;
+}
