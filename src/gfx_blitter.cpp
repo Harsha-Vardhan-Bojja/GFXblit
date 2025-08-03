@@ -151,7 +151,7 @@ EGLImageKHR gfx_blitter::create_egl_image(struct gbm_bo *bo, EGLDisplay display,
     return image;
 }
 
-int gfx_blitter::create_texture(EGLImageKHR image)
+int gfx_blitter::create_texture(EGLImageKHR image, EGLDisplay display)
 {
     GLuint texture = 0;
     glGenTextures(1,&texture);
@@ -163,6 +163,7 @@ int gfx_blitter::create_texture(EGLImageKHR image)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, image);
+    //eglDestroyImageKHR(display, image);
     return texture;
 }
 
@@ -212,4 +213,38 @@ int gfx_blitter::create_fbo(GLuint texture_id, uint32_t width, uint32_t height)
     }
 
     return fbo;
+}
+
+int gfx_blitter::render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height)
+{
+    int ret_status;
+    glBindFramebuffer(GL_FRAMEBUFFER, gfx_pipe_res.fbo);
+
+    glViewport(0, 0, width, height);
+    glUseProgram(gfx_pipe_res.program);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, gfx_pipe_res.textures[0]);
+    glUniform1i(glGetUniformLocation(gfx_pipe_res.program, "tex"), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, gfx_pipe_res.vbo);
+
+    glClearColor(0.0f, 0.0f, 0.0f,0.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    ret_status = setup_gl_ver_Attr(&gfx_pipe_res.posAttrib, &gfx_pipe_res.texAttrib, gfx_pipe_res.program);
+    if(ret_status == GFX_GET_ATTRI_SUCCESS) {
+        printf("[INFO]: posAttrib Loc = %d, texAttrib Loc = %d\n", gfx_pipe_res.posAttrib, gfx_pipe_res.texAttrib);
+    }
+    else {
+        return GFX_GET_ATTRI_FAIL;
+    }
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glFinish();
+
+    glDisableVertexAttribArray(gfx_pipe_res.posAttrib);
+    glDisableVertexAttribArray(gfx_pipe_res.texAttrib);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    return GFX_RENDER_SUCCESS;
 }

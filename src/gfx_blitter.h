@@ -12,16 +12,6 @@ class gfx_blitter
 {
 private:
 public:
-    void find_operation_type(gfx_blit_image_t *src, gfx_blit_image_t *dst);
-    int load_extensions();
-    int create_program();
-    int compile_shader(GLuint shader_type, const char *shader_source);
-    void decide_shaders(const char **vertex_shader, const char **fragment_shader);
-    EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *buffer_type);
-    int create_fbo(GLuint texture_id, uint32_t width, uint32_t height);
-    int create_gl_buffer();
-    int create_texture(EGLImageKHR image);
-    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program);
     typedef struct egl_resource {
         struct wl_display *wayland_display;
         EGLDisplay egl_display;
@@ -40,6 +30,7 @@ public:
         GFX_LOAD_EXT_FAIL,
         GFX_GET_ATTRI_SUCCESS,
         GFX_DECIDE_SHADER_FAIL,
+        GFX_RENDER_SUCCESS,
     };
 
     typedef struct gfx_pipeline {
@@ -67,6 +58,18 @@ public:
         -1.0f,  1.0f, 0.0f,  0.0f, 1.0f, // Top-left
          1.0f,  1.0f, 0.0f,  1.0f, 1.0f  // Top-right
     };
+
+    void find_operation_type(gfx_blit_image_t *src, gfx_blit_image_t *dst);
+    int load_extensions();
+    int create_program();
+    int compile_shader(GLuint shader_type, const char *shader_source);
+    void decide_shaders(const char **vertex_shader, const char **fragment_shader);
+    EGLImageKHR create_egl_image(struct gbm_bo *bo, EGLDisplay display, const char *buffer_type);
+    int create_fbo(GLuint texture_id, uint32_t width, uint32_t height);
+    int create_gl_buffer();
+    int create_texture(EGLImageKHR image, EGLDisplay display);
+    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program);
+    int render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height);
 
     gfx_blitter();
     ~gfx_blitter();
