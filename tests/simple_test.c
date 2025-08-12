@@ -102,7 +102,7 @@ int main() {
     fill_image(src, src->width, src->height, src_ptr);
 
     // Create destination image
-    void *dst_ptr = create_image(dst, 512, 512, GFX_FORMAT_ARGB8888);
+    void *dst_ptr = create_image(dst, 1024, 1024, GFX_FORMAT_ARGB8888);
     if (!dst_ptr) {
         fprintf(stderr, "Failed to allocate destination GBM image\n");
         gbm_bo_unmap(src->bo, NULL);

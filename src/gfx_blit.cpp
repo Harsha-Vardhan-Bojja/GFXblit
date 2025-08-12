@@ -35,7 +35,7 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
     }
 
     gfx_blitter_t.find_operation_type(src, dst);
-    gfx_pipe_res.program = gfx_blitter_t.create_program();
+    gfx_pipe_res.program = gfx_blitter_t.create_program(src->format, dst->format);
     if(gfx_pipe_res.program <= 0) {
         cout << "[INFO]: Failed to creete the program" << endl;
     }
