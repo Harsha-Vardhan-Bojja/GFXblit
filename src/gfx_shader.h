@@ -6,7 +6,7 @@ class gfx_shader_manager
 
 private:
 public:
-    const char* vertex_shader_source = R"(
+    const char* vertex_shader = R"(
       attribute vec3 a_position;
       attribute vec2 a_texCoord;
       varying vec2 v_texCord;
@@ -17,7 +17,7 @@ public:
     )";
 
 
-    const char* fragment_shader_source = R"(
+    const char* argb_to_argb_fs = R"(
       precision mediump float;
       varying vec2 v_texCord;
       uniform sampler2D tex;

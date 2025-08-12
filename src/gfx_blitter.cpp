@@ -50,11 +50,17 @@ void gfx_blitter::find_operation_type(gfx_blit_image_t *src, gfx_blit_image_t *d
     }
 }
 
-void gfx_blitter::decide_shaders(const char **vtx_shader,const char **frag_shader)
+void gfx_blitter::decide_shaders(const char **vtx_shader,const char **frag_shader, gfx_format_t src_fmt, gfx_format_t dst_fmt)
 {
-    gfx_shader_manager shader_manager;
-    *vtx_shader = shader_manager.vertex_shader_source;
-    *frag_shader = shader_manager.fragment_shader_source;
+    int n = sizeof(shader_map)/sizeof(shader_table_t);
+    for(int i = 0; i < n; i++){
+        if(src_fmt == shader_map[i].src_fmt && dst_fmt == shader_map[i].dst_fmt) {
+            *vtx_shader = shader_map[i].v_shader;
+            *frag_shader = shader_map[i].f_shader;
+            break;
+        }
+    }
+    printf("[DEBUG]: vertex_shader = %s & fragment_shader = %s\n", *vtx_shader, *frag_shader);
 }
 
 int gfx_blitter::compile_shader(GLuint shader_type,const char *shader_source)
@@ -74,11 +80,11 @@ int gfx_blitter::compile_shader(GLuint shader_type,const char *shader_source)
     return shader;
 }
 
-int gfx_blitter::create_program()
+int gfx_blitter::create_program(gfx_format_t src_fmt, gfx_format_t dst_fmt)
 {
     const char *vertex_shader = "NONE";
     const char *fragment_shader = "NONE";
-    decide_shaders(&vertex_shader, &fragment_shader);
+    decide_shaders(&vertex_shader, &fragment_shader, src_fmt, dst_fmt);
     if(!strcmp(vertex_shader, "NONE") || !strcmp(fragment_shader,"NONE")) {
         printf("[ERROR]: Failed to choose the shaders\n");
         printf("[ERROR]: vertex_shader = %s & fragment_shader = %s\n", vertex_shader, fragment_shader);
@@ -163,7 +169,7 @@ int gfx_blitter::create_texture(EGLImageKHR image, EGLDisplay display)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glEGLImageTargetTexture2DOES(GL_TEXTURE_2D, image);
-    //eglDestroyImageKHR(display, image);
+    eglDestroyImageKHR(display, image);
     return texture;
 }
 
