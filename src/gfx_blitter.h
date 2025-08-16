@@ -77,7 +77,7 @@ public:
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_RGBA8888, "vertex_shader", "xrgb_to_rgba_fs"},
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_RGB888,   "vertex_shader", "xrgb_to_rgb_fs"},
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_NV12,     "vertex_shader", "xrgb_to_nv12_fs"},
-        {GFX_FORMAT_XRGB8888, GFX_FORMAT_XRGB8888, "vertex_shader", "xrgb_to_xrgb_fs"},
+        {GFX_FORMAT_XRGB8888, GFX_FORMAT_XRGB8888, vertex_shader,  xrgb_to_xrgb_fs},
         {GFX_FORMAT_NV12,     GFX_FORMAT_ARGB8888, "vertex_shader", "nv12_to_argb_fs"},
         {GFX_FORMAT_NV12,     GFX_FORMAT_RGBA8888, "vertex_shader", "nv12_to_rgba_fs"},
         {GFX_FORMAT_NV12,     GFX_FORMAT_RGB888,   "vertex_shader", "nv12_to_rgb_fs"},
