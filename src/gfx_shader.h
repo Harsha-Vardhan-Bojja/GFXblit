@@ -16,20 +16,45 @@ public:
       }
     )";
 
-
+    /* Refer this formaula for the rotaion of P(x,y)
+        x' = xcos(θ) - ysin(θ)
+        y' = xsin(θ) + ysin(θ)
+      Filps
+        xflip = flip over x axis so result is (x, -y)
+        yflip = flip over y axis so result is (-x, y)
+    */
     const char* argb_to_argb_fs = R"(
       precision mediump float;
       varying vec2 v_texCord;
       uniform sampler2D tex;
       uniform int rotation;
       void main() {
-          /* Refer this formaula for the rotaion of P(x,y)
-             x' = xcos(θ) - ysin(θ)
-             y' = xsin(θ) + ysin(θ)
-            Filps
-            xflip = flip over x axis so result is (x, -y)
-            yflip = flip over y axis so result is (-x, y)
-          */
+          vec2 uv = v_texCord;
+          if (rotation == 0) {
+              uv = v_texCord;
+          } else if (rotation == 1) {
+              uv = vec2(v_texCord.y, 1.0 - v_texCord.x);
+          } else if (rotation == 2) {
+              uv = vec2(1.0 - v_texCord.x, 1.0 - v_texCord.y);
+          } else if (rotation == 3) {
+              uv = vec2(1.0 - v_texCord.y, v_texCord.x);
+          } else if (rotation == 4) {
+              uv = vec2(1.0 - v_texCord.x, v_texCord.y);
+          } else if (rotation == 5) {
+              uv = vec2(v_texCord.x, 1.0 - v_texCord.y);
+          } else if (rotation == 6) {
+              uv = vec2(1.0 - v_texCord.x, 1.0 - v_texCord.y);
+          }
+          gl_FragColor = texture2D(tex, uv);
+      }
+    )";
+
+    const char* xrgb_to_xrgb_fs = R"(
+      precision mediump float;
+      varying vec2 v_texCord;
+      uniform sampler2D tex;
+      uniform int rotation;
+      void main() {
           vec2 uv = v_texCord;
           if (rotation == 0) {
               uv = v_texCord;

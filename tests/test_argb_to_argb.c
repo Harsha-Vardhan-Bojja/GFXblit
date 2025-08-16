@@ -53,7 +53,7 @@ static void fill_image(gfx_blit_image_t *img, uint32_t width, uint32_t height, v
     for (uint32_t y = 0; y < height; ++y) {
         for (uint32_t x = 0; x < width; ++x) {
             uint8_t green_val = (y * 255) / height;
-            pixels[y * (img->stride[0] / 4) + x] = 0xFF000000 | (green_val << 8); // ARGB
+            pixels[y * (img->stride[0] / 4) + x] = 0x33000000 | (green_val << 8); // ARGB
         }
     }
 }
