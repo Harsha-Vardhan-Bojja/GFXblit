@@ -23,6 +23,8 @@ typedef enum gfx_format {
     GFX_FORMAT_RGB888,
     GFX_FORMAT_XRGB8888,
     GFX_FORMAT_NV12,
+    GFX_FORMAT_GR88,
+    GFX_FORMAT_R8,
 } gfx_format_t;
 
 typedef struct gfx_blit_image {

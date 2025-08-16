@@ -40,6 +40,7 @@ public:
         GLuint vbo;
         GLint posAttrib;
         GLint texAttrib;
+        GLint rotation_idx;
     } gfx_pipeline_t;
 
     enum gfx_operation {
@@ -103,8 +104,8 @@ public:
     int create_fbo(GLuint texture_id, uint32_t width, uint32_t height);
     int create_gl_buffer();
     int create_texture(EGLImageKHR image, EGLDisplay display);
-    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program);
-    int render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height);
+    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri,GLint *rotation_idx, GLuint program, gfx_rotation_t rot_value);
+    int render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height, gfx_rotation_t rot_value);
 
     gfx_blitter();
     ~gfx_blitter();
