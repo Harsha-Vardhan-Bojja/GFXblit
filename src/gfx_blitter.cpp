@@ -182,15 +182,17 @@ int gfx_blitter::create_gl_buffer()
     return vbo;
 }
 
-int gfx_blitter::setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint program)
+int gfx_blitter::setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLint *rotation_idx, GLuint program, gfx_rotation rot_value)
 {
     *pos_attri = -1;
     *tex_attri = -1;
+    *rotation_idx = -1;
     *pos_attri = glGetAttribLocation(program, "a_position");
     *tex_attri = glGetAttribLocation(program, "a_texCoord");
-    if(*pos_attri == 1 || *tex_attri == -1) {
+    *rotation_idx = glGetUniformLocation(program, "rotation");
+    if(*pos_attri == -1 || *tex_attri == -1 || *rotation_idx == -1) {
         printf("[ERROR]: Failed to get the Attributes location\n");
-        printf("[ERROR]: pos_attri = %d, tex_attri = %d\n", *pos_attri, *tex_attri);
+        printf("[ERROR]: pos_attri = %d, tex_attri = %d, roation_idx = %d\n", *pos_attri, *tex_attri, *rotation_idx);
         return GFX_GET_ATTRI_FAIL;
     }
 
@@ -198,6 +200,7 @@ int gfx_blitter::setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLuint pr
     glVertexAttribPointer(*pos_attri, 3, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)0);
     glEnableVertexAttribArray(*tex_attri);
     glVertexAttribPointer(*tex_attri, 2, GL_FLOAT, GL_FALSE, 5*sizeof(float), (void *)(3 * sizeof(float)));
+    glUniform1i(*rotation_idx, rot_value);
     return GFX_GET_ATTRI_SUCCESS;
 }
 
@@ -221,7 +224,7 @@ int gfx_blitter::create_fbo(GLuint texture_id, uint32_t width, uint32_t height)
     return fbo;
 }
 
-int gfx_blitter::render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height)
+int gfx_blitter::render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height, gfx_rotation_t rot_value)
 {
     int ret_status;
     glBindFramebuffer(GL_FRAMEBUFFER, gfx_pipe_res.fbo);
@@ -236,9 +239,9 @@ int gfx_blitter::render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t he
     glClearColor(0.0f, 0.0f, 0.0f,0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    ret_status = setup_gl_ver_Attr(&gfx_pipe_res.posAttrib, &gfx_pipe_res.texAttrib, gfx_pipe_res.program);
+    ret_status = setup_gl_ver_Attr(&gfx_pipe_res.posAttrib, &gfx_pipe_res.texAttrib, &gfx_pipe_res.rotation_idx, gfx_pipe_res.program, rot_value);
     if(ret_status == GFX_GET_ATTRI_SUCCESS) {
-        printf("[INFO]: posAttrib Loc = %d, texAttrib Loc = %d\n", gfx_pipe_res.posAttrib, gfx_pipe_res.texAttrib);
+        printf("[INFO]: posAttrib Loc = %d, texAttrib Loc = %d, rotation_idx = %d\n", gfx_pipe_res.posAttrib, gfx_pipe_res.texAttrib, gfx_pipe_res.rotation_idx);
     }
     else {
         return GFX_GET_ATTRI_FAIL;

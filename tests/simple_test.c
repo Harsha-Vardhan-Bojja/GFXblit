@@ -17,6 +17,9 @@ static void* create_image(gfx_blit_image_t *img, uint32_t width, uint32_t height
         case GFX_FORMAT_RGB888:   gbm_fmt = GBM_FORMAT_RGB888; break;
         case GFX_FORMAT_ARGB8888: gbm_fmt = GBM_FORMAT_ARGB8888; break;
         case GFX_FORMAT_XRGB8888: gbm_fmt = GBM_FORMAT_XRGB8888; break;
+        case GFX_FORMAT_NV12:     gbm_fmt = GBM_FORMAT_NV12; break;
+        case GFX_FORMAT_R8:       gbm_fmt = GBM_FORMAT_R8; break;
+        case GFX_FORMAT_GR88:     gbm_fmt = GBM_FORMAT_GR88; break;
         default: fprintf(stderr, "Unsupported format\n"); return NULL;
     }
 
@@ -111,7 +114,7 @@ int main() {
     }
 
     src->rotation = GFX_ROTATION_0;
-    dst->rotation = GFX_ROTATION_0;
+    dst->rotation = GFX_ROTATION_270;
 
     // Call the blitting function
     printf("Executing the test\n");

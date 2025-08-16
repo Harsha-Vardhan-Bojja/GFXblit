@@ -74,7 +74,7 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         return -1;
     }
 
-    ret_status = gfx_blitter_t.render(gfx_pipe_res, dst->width, dst->height);
+    ret_status = gfx_blitter_t.render(gfx_pipe_res, dst->width, dst->height, dst->rotation);
     if(ret_status == gfx_blitter_t.GFX_RENDER_SUCCESS){
         printf("[INFO]: Rendering got success\n");
     }
