@@ -14,4 +14,11 @@ test_exe = executable('test_xrgb_to_xrgb',
   install: false
 )
 
+test_exe = executable('test_xrgb_to_argb',
+  'test_xrgb_to_argb.c',
+  include_directories: include_directories('..'),
+  dependencies: [gfxblit_dep],
+  install: false
+)
+
 test('gfxblit tests', test_exe)

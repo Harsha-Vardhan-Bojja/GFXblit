@@ -224,13 +224,27 @@ int gfx_blitter::create_fbo(GLuint texture_id, uint32_t width, uint32_t height)
     return fbo;
 }
 
+int gfx_blitter::set_alpha_value(GLuint program, GLfloat alpha_value, GLint *alpha_value_idx)
+{
+    *alpha_value_idx = glGetUniformLocation(program, "alpha_val");
+    if(*alpha_value_idx < 0) {
+        printf("[ERROR]: Failed to get the alpha_val loaction\n");
+        printf("[ERROR]: alpha_value_idx = %d\n", *alpha_value_idx);
+        return GFX_GET_ATTRI_FAIL;
+    }
+    else {
+        printf("[DEBUG]: alpha_value_idx = %d\n", *alpha_value_idx);
+        glUniform1f(*alpha_value_idx, alpha_value);
+        return GFX_GET_ATTRI_SUCCESS;
+    }
+}
+
 int gfx_blitter::render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height, gfx_rotation_t rot_value)
 {
     int ret_status;
     glBindFramebuffer(GL_FRAMEBUFFER, gfx_pipe_res.fbo);
 
     glViewport(0, 0, width, height);
-    glUseProgram(gfx_pipe_res.program);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, gfx_pipe_res.textures[0]);
     glUniform1i(glGetUniformLocation(gfx_pipe_res.program, "tex"), 0);

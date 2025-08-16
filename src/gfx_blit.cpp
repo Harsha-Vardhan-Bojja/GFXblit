@@ -74,6 +74,14 @@ extern "C" int gfx_blit(gfx_blit_image_t *src, gfx_blit_image_t *dst)
         return -1;
     }
 
+    glUseProgram(gfx_pipe_res.program);
+
+    if(src->format == GFX_FORMAT_XRGB8888 && dst->format == GFX_FORMAT_ARGB8888) {
+        ret_status = gfx_blitter_t.set_alpha_value(gfx_pipe_res.program, dst->alpha_val, &gfx_pipe_res.alpha_value_idx);
+        if(ret_status == gfx_blitter_t.GFX_GET_ATTRI_FAIL)
+            return -1;
+    }
+
     ret_status = gfx_blitter_t.render(gfx_pipe_res, dst->width, dst->height, dst->rotation);
     if(ret_status == gfx_blitter_t.GFX_RENDER_SUCCESS){
         printf("[INFO]: Rendering got success\n");
