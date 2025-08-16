@@ -38,6 +38,7 @@ typedef struct gfx_blit_image {
     struct gbm_bo *bo;
     struct gbm_device *device;
     bool status;
+    float alpha_val;
 } gfx_blit_image_t;
 
 /**

@@ -41,6 +41,7 @@ public:
         GLint posAttrib;
         GLint texAttrib;
         GLint rotation_idx;
+        GLint alpha_value_idx;
     } gfx_pipeline_t;
 
     enum gfx_operation {
@@ -73,7 +74,7 @@ public:
         {GFX_FORMAT_RGB888,   GFX_FORMAT_XRGB8888, "vertex_shader", "rgb_to_xrgb_fs"},
         {GFX_FORMAT_RGB888,   GFX_FORMAT_NV12,     "vertex_shader", "rgb_to_nv12_fs"},
         {GFX_FORMAT_RGB888,  GFX_FORMAT_RGB888,    "vertex_shader", "rgb_to_rgb_fs"},
-        {GFX_FORMAT_XRGB8888, GFX_FORMAT_ARGB8888, "vertex_shader", "xrgb_to_argb_fs"},
+        {GFX_FORMAT_XRGB8888, GFX_FORMAT_ARGB8888, vertex_shader, xrgb_to_argb_fs},
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_RGBA8888, "vertex_shader", "xrgb_to_rgba_fs"},
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_RGB888,   "vertex_shader", "xrgb_to_rgb_fs"},
         {GFX_FORMAT_XRGB8888, GFX_FORMAT_NV12,     "vertex_shader", "xrgb_to_nv12_fs"},
@@ -104,7 +105,8 @@ public:
     int create_fbo(GLuint texture_id, uint32_t width, uint32_t height);
     int create_gl_buffer();
     int create_texture(EGLImageKHR image, EGLDisplay display);
-    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri,GLint *rotation_idx, GLuint program, gfx_rotation_t rot_value);
+    int setup_gl_ver_Attr(GLint *pos_attri, GLint *tex_attri, GLint *rotation_idx, GLuint program, gfx_rotation_t rot_value);
+    int set_alpha_value(GLuint program, GLfloat alpha_value, GLint *alpha_value_idx);
     int render(gfx_pipeline_t gfx_pipe_res, uint32_t width, uint32_t height, gfx_rotation_t rot_value);
 
     gfx_blitter();
