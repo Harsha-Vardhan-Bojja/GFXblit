@@ -61,7 +61,7 @@ public:
     shader_table_t shader_map[50] = {
         {GFX_FORMAT_ARGB8888, GFX_FORMAT_RGBA8888, "vertex_shader", "argb_to_rgba_fs"},
         {GFX_FORMAT_ARGB8888, GFX_FORMAT_RGB888,   "vertex_shader", "argb_to_rgb_fs"},
-        {GFX_FORMAT_ARGB8888, GFX_FORMAT_XRGB8888, "vertex_shader", "argb_to_xrgb_fs"},
+        {GFX_FORMAT_ARGB8888, GFX_FORMAT_XRGB8888, vertex_shader, xrgb_to_argb_fs},
         {GFX_FORMAT_ARGB8888, GFX_FORMAT_NV12,     "vertex_shader", "argb_to_nv12_fs"},
         {GFX_FORMAT_ARGB8888, GFX_FORMAT_ARGB8888, vertex_shader,    argb_to_argb_fs},
         {GFX_FORMAT_RGBA8888, GFX_FORMAT_ARGB8888, "vertex_shader", "rgba_to_argb_fs"},
